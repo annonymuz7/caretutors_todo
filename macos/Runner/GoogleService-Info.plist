@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyClVX9CKl67bZ-mdDCWPGbTm4gdZHkhl54</string>
+	<key>GCM_SENDER_ID</key>
+	<string>444752871044</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.caretutorsTodo.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>interview-512ac</string>
+	<key>STORAGE_BUCKET</key>
+	<string>interview-512ac.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:444752871044:ios:2390b614b7438c86f40cd1</string>
+</dict>
+</plist>

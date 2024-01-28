@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "444752871044",
+    "project_id": "interview-512ac",
+    "storage_bucket": "interview-512ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444752871044:android:ebc217f7db9f482cf40cd1",
+        "android_client_info": {
+          "package_name": "com.example.caretutors_todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxeSD-wuOMELG9n9CV8ZFylechoB7088s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
