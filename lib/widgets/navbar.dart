@@ -25,7 +25,7 @@ class Navbar extends StatelessWidget {
       items: const [
         TabItem(icon: Icons.logout, title: 'Logout'),
         TabItem(icon: Icons.home, title: 'Home'),
-        TabItem(icon: Icons.settings, title: 'Settings'),
+        TabItem(icon: Icons.sync, title: 'Sync'),
       ],
       initialActiveIndex: 1,
       onTap: (int i) {
