@@ -63,7 +63,7 @@ class _Login_PageState extends State<Login_Page> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: size.height*0.2,),
+                SizedBox(height: size.height*0.15,),
                 Container(
                   width: size.width*0.8,
                   child: RichText(
@@ -239,9 +239,6 @@ class _Login_PageState extends State<Login_Page> {
                     ),
                   ),
                 ),
-
-
-
               ],
             ),
           ),
@@ -253,12 +250,7 @@ class _Login_PageState extends State<Login_Page> {
   void goto_home_page(BuildContext context) async {
     await Shared_Prefference_Class.init();
     await Shared_Prefference_Class.set_Login_Status(true);
-    await Shared_Prefference_Class.set_role_Status(getDisplayName());
-    //await print(Shared_Prefference_Class.get_OnBoarding_Status().toString());
-    // Navigator.of(context).pushReplacement(
-    //   MaterialPageRoute(builder: (_) => Login_Page()),
-    // );
-    Get.offAll(Home());
+    Get.offAll(const Home());
   }
 
   Future<void> showConfirmationDialog(BuildContext context) async {
@@ -266,7 +258,7 @@ class _Login_PageState extends State<Login_Page> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           title: Text('Loggin In'),
           content: Text('Please wait for a moment.'),
           actions: <Widget>[
@@ -308,7 +300,5 @@ class _Login_PageState extends State<Login_Page> {
     String displayName = user?.displayName ?? "N/A";
     return displayName;
   }
-
-
 
 }
