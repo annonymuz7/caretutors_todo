@@ -4,10 +4,13 @@ import 'package:caretutors_todo/pages/home.dart';
 import 'package:caretutors_todo/pages/registration_page.dart';
 import 'package:colorful_circular_progress_indicator/colorful_circular_progress_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../constants/strings.dart';
+import '../utils/common_methods.dart';
 import '../utils/shared_preference.dart';
 
 class Login_Page extends StatefulWidget {
@@ -29,6 +32,10 @@ class _Login_PageState extends State<Login_Page> {
   String? uid = '';
   bool _isPasswordVisible = false;
 
+  final DatabaseReference _database = FirebaseDatabase(
+      databaseURL: Strings.database_url
+  ).reference();
+
 
 
   @override
@@ -38,6 +45,8 @@ class _Login_PageState extends State<Login_Page> {
     pass = TextEditingController();
 
     super.initState();
+
+
 
   }
 
@@ -300,5 +309,29 @@ class _Login_PageState extends State<Login_Page> {
     String displayName = user?.displayName ?? "N/A";
     return displayName;
   }
+
+  void get_schedule() {
+
+    _database.child('ToDo/${Common_Methods().get_uid()}/').onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      print(Common_Methods().get_uid());
+      if(data != null) {
+        setState(() {
+          //is_loaded = false;
+          //schedule = data.toString();
+        });
+        print(data.toString());
+      }
+      else {
+        print('else:   ');
+        print(data.toString());
+      }
+
+    });
+  }
+
+
+
+
 
 }

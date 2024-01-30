@@ -30,6 +30,8 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
   bool _enabled = false;
   bool _themeDark = false;
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -292,9 +294,6 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
                 ),
 
 
-
-
-
               ],
             ),
           ),
@@ -317,7 +316,7 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
                 print('No Clicked!!');
                 Navigator.of(context).pop();
               },
-              child: Text('No'),
+              child: Text('Cancel'),
             ),
 
             TextButton(
@@ -328,7 +327,7 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
                 Navigator.of(context).pop();
 
               },
-              child: Text('Yes'),
+              child: Text('Update'),
             ),
 
           ],
@@ -415,6 +414,8 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
 
                 print('Yes Clicked!!');
                 Navigator.of(context).pop();
+
+
 
               },
               child: Text('Yes'),

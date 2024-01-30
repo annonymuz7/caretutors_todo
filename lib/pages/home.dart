@@ -8,6 +8,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:super_banners/super_banners.dart';
 
 import '../constants/strings.dart';
+import '../repository/db_manager.dart';
 import '../utils/common_methods.dart';
 import '../utils/shared_preference.dart';
 import 'login_page.dart';
@@ -33,10 +34,15 @@ class _HomeState extends State<Home> {
   String schedule = 'Loading..';
   bool is_loaded = true;
   bool is_loaded_pic = true;
-  bool is_todo_list_empty = true;
+  bool is_todo_list_empty = false;
+  late List<Map<String, dynamic>> result;
+  late List<Map<String, dynamic>> new_value;
+
 
   late TextEditingController title;
   late TextEditingController description;
+
+  var dbHelper = DatabaseHelper();
 
   @override
   void initState() {
@@ -45,6 +51,7 @@ class _HomeState extends State<Home> {
     get_schedule();
     title = TextEditingController();
     description = TextEditingController();
+    get_items();
   }
 
   @override
@@ -87,39 +94,53 @@ class _HomeState extends State<Home> {
                       children: [
                         Container(
                           width: size.width*0.9*0.6,
-                          child: RichText(
-                              text: TextSpan(
-                                style:  DefaultTextStyle.of(context).style,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Dashboard',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black, // Set the color for "Welcome"
-                                      fontSize: size.width*0.09,
-                                      decoration: TextDecoration.none,
+                          child: InkWell(
+                            onTap: () async{
+
+                              // await dbHelper.updateData(1, {
+                              //   "title": "Sanju Shudhu Amr!!",
+                              //
+                              // });
 
 
+                            },
+                            child: RichText(
+                                text: TextSpan(
+                                  style:  DefaultTextStyle.of(context).style,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Dashboard',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black, // Set the color for "Welcome"
+                                        fontSize: size.width*0.09,
+                                        decoration: TextDecoration.none,
+
+
+                                      ),
                                     ),
-                                  ),
-                                  TextSpan(
-                                    text: '',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF00A669), // Set the color for "Back"
-                                      fontSize: size.width*0.08,
-                                      decoration: TextDecoration.none,
+                                    TextSpan(
+                                      text: '',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF00A669), // Set the color for "Back"
+                                        fontSize: size.width*0.08,
+                                        decoration: TextDecoration.none,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              )
+                                  ],
+                                )
+                            ),
                           ),
                         ),
 
                         SizedBox(width: size.width*0.9*0.15,),
 
                         InkWell(
-                            onTap: (){
+                            onTap: () async{
+
+                              // List<Map<String, dynamic>> result = await dbHelper.getData();
+                              // print(result);
 
                             },
                             child: Container(
@@ -141,7 +162,7 @@ class _HomeState extends State<Home> {
                     width: size.width * 1,
                     //color: Colors.green,
                     child: ListView.builder(
-                      itemCount: 12,
+                      itemCount: result.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
@@ -150,9 +171,9 @@ class _HomeState extends State<Home> {
 
                               Get.to(Manage_Todo_Items(
 
-                                'dfdfdfdf',
-                                'tttttttttttt',
-                                1
+                                  result[index]["title"],
+                                  result[index]["description"],
+                                  get_status(result[index]["status"])
 
                               ));
                             },
@@ -173,7 +194,7 @@ class _HomeState extends State<Home> {
                                         Row(
                                           children: [
                                             Expanded(
-                                              child: Text('Frist Title',
+                                              child: Text(result[index]["title"],
                                               style: TextStyle(
                                                 fontSize: size.height * 0.03,
                                                 fontWeight: FontWeight.w600
@@ -187,7 +208,7 @@ class _HomeState extends State<Home> {
                                         Row(
                                           children: [
                                             Expanded(
-                                              child: Text('Second Titlessdddddddddsssssssssssssssssss',
+                                              child: Text(result[index]["description"],
                                                 style: TextStyle(
                                                     fontSize: size.height * 0.02,
                                                     fontWeight: FontWeight.w400
@@ -205,10 +226,10 @@ class _HomeState extends State<Home> {
 
                                   CornerBanner(
                                     bannerPosition: CornerBannerPosition.topRight,
-                                    bannerColor: (false) ? Colors.redAccent : Color(0xFF00A669),
+                                    bannerColor: (result[index]["status"]=="incomplete") ? Colors.redAccent : Color(0xFF00A669),
                                     elevation: 5,
                                     child: Center(
-                                      child: Text('Complete',
+                                      child: Text(result[index]["status"],
                                         style: TextStyle(
                                             color: Colors.white
                                         ),),
@@ -312,11 +333,45 @@ class _HomeState extends State<Home> {
             ),
 
             TextButton(
-              onPressed: () {
+              onPressed: () async{
                 // Close the dialog and perform the action
 
                 print('Yes Clicked!!');
                 Navigator.of(context).pop();
+
+                // await DB_Helper.instance.insert(
+                //     {
+                //       DB_Helper.col_uid: Common_Methods().get_uid(),
+                //       DB_Helper.col_title: title.text,
+                //       DB_Helper.col_descrription: description.text,
+                //       DB_Helper.col_status: "Incomplete"
+                //     });
+
+
+                await dbHelper.insertData({
+                  "uid": Common_Methods().get_uid(),
+                  "title": title.text,
+                  "description": description.text,
+                  "status": "incomplete",
+                }).then((value) {
+
+                });
+
+
+                result = await dbHelper.getData();
+
+
+                // new_value = await dbHelper.getData();
+                //   result.clear();
+                //   result.addAll(new_value);
+                //   new_value.clear();
+                //   print(result);
+
+                  setState(() {
+                    title.clear();
+                    description.clear();
+                  });
+
 
               },
               child: Text('Yes'),
@@ -410,6 +465,20 @@ class _HomeState extends State<Home> {
       ),
     );
 
+  }
+
+  void get_items() async{
+    result = await dbHelper.getData();
+    if(result.isEmpty) return;
+    setState(() {
+      is_todo_list_empty = true;
+    });
+    print(result);
+  }
+
+  int get_status(String result) {
+    if(result=="incomplete") return 1;
+    return 0;
   }
 
 }
