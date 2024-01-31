@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   bool is_loaded = true;
   bool is_loaded_pic = true;
   bool is_todo_list_empty = false;
-  late List<Map<String, dynamic>> result;
+  late  List<Map<String, dynamic>> result;
   late List<Map<String, dynamic>> new_value;
 
 
@@ -173,7 +173,8 @@ class _HomeState extends State<Home> {
 
                                   result[index]["title"],
                                   result[index]["description"],
-                                  get_status(result[index]["status"])
+                                  get_status(result[index]["status"]),
+                                  result[index]["id"]
 
                               ));
                             },

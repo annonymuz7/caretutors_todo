@@ -1,5 +1,6 @@
 
 
+import 'package:caretutors_todo/pages/home.dart';
 import 'package:caretutors_todo/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
@@ -8,13 +9,15 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+import '../repository/db_manager.dart';
+
 class Manage_Todo_Items extends StatefulWidget {
 
   String title, description;
-  int position_status;
+  int position_status, id;
 
 
-  Manage_Todo_Items(this.title, this.description, this.position_status);
+  Manage_Todo_Items(this.title, this.description, this.position_status, this.id);
 
   @override
   State<Manage_Todo_Items> createState() => _Manage_Todo_ItemsState();
@@ -29,6 +32,10 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
 
   bool _enabled = false;
   bool _themeDark = false;
+
+  var dbHelper = DatabaseHelper();
+
+  String status = '';
 
 
 
@@ -260,6 +267,13 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
                               icons: [null, FontAwesomeIcons.times],
                               onToggle: (index) {
                                 print('switched to: $index');
+                                if(index==0) {
+                                  status = 'complete';
+                                  print(status);
+                                } else {
+                                  status = 'incomplete';
+                                  print(status);
+                                }
                               },
                             ),
 
@@ -320,11 +334,22 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
             ),
 
             TextButton(
-              onPressed: () {
+              onPressed: () async{
                 // Close the dialog and perform the action
 
                 print('Yes Clicked!!');
                 Navigator.of(context).pop();
+
+                await dbHelper.updateData(widget.id, {
+                  "title": title.text,
+                  "description": description.text,
+                }).then((value) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (BuildContext context) => Home()),
+                      ModalRoute.withName('/') // Replace this with your root screen's route name (usually '/')
+                  );
+                });
 
               },
               child: Text('Update'),
@@ -409,12 +434,23 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
           content: Text('Are you sure you want to delete?'),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
+              onPressed: () async{
                 // Close the dialog and perform the action
 
                 print('Yes Clicked!!');
                 Navigator.of(context).pop();
 
+
+                await dbHelper.deleteData(widget.id).then((value) {
+
+                  //Get.offAll(Home());
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (BuildContext context) => Home()),
+                      ModalRoute.withName('/') // Replace this with your root screen's route name (usually '/')
+                  );
+
+                });
 
 
               },
@@ -447,11 +483,22 @@ class _Manage_Todo_ItemsState extends State<Manage_Todo_Items> {
           content: Text('Are you sure you want update?'),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
+              onPressed: () async{
                 // Close the dialog and perform the action
 
                 print('Yes Clicked!!');
                 Navigator.of(context).pop();
+
+                await dbHelper.updateData(widget.id, {
+                  "status": status,
+                }).then((value) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (BuildContext context) => Home()),
+                      ModalRoute.withName('/') // Replace this with your root screen's route name (usually '/')
+                  );
+                });
+
 
               },
               child: Text('Yes'),
